@@ -1,0 +1,8 @@
+@font-face {
+    font-family: "Ionicons";
+    font-style: normal;
+    font-weight: normal;
+
+    src: url("https://ionicons.com/fonts/ionicons.eot?v=2.0.1");
+    src: url("https://ionicons.com/fonts/ionicons.eot?v=2.0.1#iefix") format("embedded-opentype"), url("https://ionicons.com/fonts/ionicons.ttf?v=2.0.1") format("truetype"), url("https://ionicons.com/fonts/ionicons.woff?v=2.0.1") format("woff"), url("https://ionicons.com/fonts/ionicons.svg?v=2.0.1#Ionicons") format("svg");
+}
