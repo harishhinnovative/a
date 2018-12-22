@@ -14,7 +14,7 @@ $this->load->view("admin/include/header");
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <div class="seipkon-breadcromb-left">
-                                    <h3>All Products
+                                    <h3>Products Listing
                                         <div class="btn-group pull-right">
                                             <a href="<?php echo admin_url(); ?>products/add"> <button class="btn btn-info"> Add New <i class="fa fa-plus"></i></button></a>
                                         </div>
@@ -58,12 +58,13 @@ $this->load->view("admin/include/header");
                             <th>#</th>
                             <th> Category </th>
                             <th> Product Name </th>
-                            <th> Product Code</th>
-                            <th> Price </th>
-                            <th> Price<br/> After Disc.</th>
+                            <th>SKU</th>
+                            <th>INV</th>
+                            <th>Cost</th>
+                            <th>Price </th>
+                            <th>Discount<br>Percent</th>
+                            <th>Weight</th>
                             <th>Tax</th>
-                            <th>Color</th>
-                            <th>Size</th>
                             <th>Featured</th>
                             <th>Best Selling</th>
                             <th>Status</th>
@@ -74,41 +75,48 @@ $this->load->view("admin/include/header");
                     <tbody>
 <?php
 $i = 1;
-foreach ($products as $pro) {
+if(count($products)) {
+  foreach ($products as $pro) {
 ?>
     <tr>
         <td><?php echo $i; ?></td>
-        <td><?php echo $pro->ctg_name; ?></td>
-        <td><?php echo $pro->pro_name; ?></td>
-        <td><?php echo $pro->pro_code; ?></td>
-        <td><?php echo $pro->pro_price; ?></td>
-        <td><?php echo $pro->after_discount_price; ?></td>
-        <td><?php echo $pro->pro_tax; ?></td>
-        <td><?php echo $pro->pro_color; ?></td>
-        <td><?php echo $pro->pro_size; ?></td>
-        <td><?php echo ($pro->pro_feature_product==1) ? "Yes" : "No"; ?></td>
-        <td><?php echo ($pro->pro_best_selling==1) ? "Yes" : "No"; ?></td>
-        <td><?php echo ($pro->pro_status == 1) ? 'Enable' : 'Disable'; ?></td>
-        <td><img src="<?php echo $image_url . $pro->pro_image; ?>" alt="product image" width="16" onerror="this.src='<?php echo base_url("assets/images/noimage.jpg")?>'" /></td>
+        <td><?php echo $pro->category; ?></td>
+        <td><?php echo $pro->title; ?></td>
+        <td><?php echo $pro->sku; ?></td>
+        <td><?php echo $pro->inv; ?></td>
+        <td><?php echo $pro->cost; ?></td>
+        <td><?php echo $pro->price; ?></td>
+        <td><?php echo $pro->discount_per; ?>%</td>
+        <td><?php echo $pro->weight; ?></td>
+        <td><?php echo $pro->tax; ?></td>
+        <td><?php echo ($pro->feature_product==1) ? "Yes" : "No"; ?></td>
+        <td><?php echo ($pro->best_selling==1) ? "Yes" : "No"; ?></td>
+        <td><?php echo ($pro->status == 1) ? 'Enable' : 'Disable'; ?></td>
+        <td><img src="<?php echo $image_url ."/{$pro->sid}/thumb/". $pro->imagename; ?>" alt="product image" width="16" onerror="this.src='<?php echo base_url("assets/images/noimage.jpg")?>'" /></td>
         <td>
-        <a href="<?php echo admin_url() . 'products/edit/' . $pro->pro_id; ?>" class="product-table-info" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil"></i></a>
+        <a href="<?php echo admin_url() . 'products/edit/' . $pro->sid; ?>" class="product-table-info" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil"></i></a>
 <?php
-if ($pro->pro_status == '0') {
+if ($pro->status == '0') {
 ?>
-<a class="btn btn-sm btn-danger" title="Enable" href="<?php echo admin_url() . 'catalog/productenabledisable/' . $pro->pro_id . '/1'; ?>" >
+<a class="btn btn-sm btn-danger" title="Enable" href="<?php echo admin_url() . 'catalog/productenabledisable/' . $pro->sid . '/1'; ?>" >
     <i class="fa fa-eye-slash btn-danger"></i>
 </a>
 <?php
 } else {
 ?>
-<a class="btn btn-sm btn-success" title="Disable" href="<?php echo admin_url() . 'catalog/productenabledisable/' . $pro->pro_id . '/0'; ?>" ><i class="fa fa-eye"></i></a>
+<a class="btn btn-sm btn-success" title="Disable" href="<?php echo admin_url() . 'catalog/productenabledisable/' . $pro->sid . '/0'; ?>" ><i class="fa fa-eye"></i></a>
 <?php } ?>
-<a href="<?php echo admin_url() . 'products/delete/' . $pro->pro_id;?>" onclick="return confirm('Are you sure to perform this action?');" class="product-table-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></a>
+<a href="<?php echo admin_url() . 'products/delete/' . $pro->sid;?>" onclick="return confirm('Are you sure to perform this action?');" class="product-table-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></a>
         </td>
     </tr>
     <?php
     $i++;
     }
+} else {
+    ?>
+    <tr><td colspan="15">No records found.</td></tr>
+    <?php
+}
     ?>
 </tbody>
 </table>

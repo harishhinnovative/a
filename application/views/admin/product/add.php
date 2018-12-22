@@ -15,7 +15,7 @@ $this->load->view("admin/include/header");
                         <div class="row">
                             <div class="col-md-6 col-sm-6">
                                  <div class="seipkon-breadcromb-left">
-                                   <h3>Add Product</h3>
+                                     <h3><?php echo (!empty($product->sid)) ? "Edit" : "Add"?> Product</h3>
                                 </div> 
                             </div>
                             <div class="col-md-6 col-sm-6">
@@ -23,7 +23,7 @@ $this->load->view("admin/include/header");
                                    <ul>
                                       <li><a href="<?php echo admin_url()?>">home</a></li>
                                       <li><a href="<?php echo admin_url(). "products";?>">Products</a></li>
-                                      <li>Add New Product</li>
+                                      <li><?php echo (!empty($product->sid)) ? "Edit" : "Add"?> Product</li>
                                    </ul>
                                 </div> 
                             </div>
@@ -62,13 +62,14 @@ $this->load->view("admin/include/header");
         <div class="col-md-3">
             <p>
                 <label>Category</label>
-                <select class="form-control" name="pro_ctg_id" required>
+                <select class="form-control" name="cat_id" required>
                     <option value="">--SELECT--</option>
                     <?php
                     if(count($categories)) {
                       foreach ($categories as $cat) {
+                          $selected = (isset($product->best_selling) && ($product->best_selling==1)) ? 'selected=""' :'';
                       ?>
-                        <option value="<?php echo $cat->ctg_id; ?>"><?php echo $cat->ctg_name; ?></option>
+                        <option value="<?php echo $cat->sid; ?>" <?php echo $selected; ?>><?php echo $cat->title; ?></option>
                     <?php
                       }
                     } ?>
@@ -77,20 +78,20 @@ $this->load->view("admin/include/header");
         </div>
         <div class="col-md-3">
             <p>
-                <label>Product Name</label>
-                <input type="text" name="pro_name" placeholder="Enter Product Name" required="" />
+                <label>Product Title</label>
+                <input type="text" name="title" placeholder="Enter Product Name" required="" value="<?php echo isset($product->title) ? $product->title :"";?>" />
             </p>
         </div>
         <div class="col-md-3">
             <p>
-                <label>Product Code</label>
-                <input type="text" name="pro_code" placeholder="Enter Product Code" required="" />
+                <label>SKU</label>
+                <input type="text" name="sku" placeholder="Enter SKU" required="" value="<?php echo isset($product->sku) ? $product->sku :"";?>" />
             </p>
         </div>
         <div class="col-md-3">
             <p>
-                <label>Product Modal</label>
-                <input type="text" name="pro_modal_no" placeholder="Enter Product Modal" required="" />
+                <label>Inventory</label>
+                <input type="text" name="inv" placeholder="Enter INV" required="" value="<?php echo isset($product->inv) ? $product->inv :"";?>"  />
             </p>
         </div>
     </div>
@@ -98,41 +99,41 @@ $this->load->view("admin/include/header");
     <div class="row">
         <div class="col-md-2">
             <p>
-                <label>Product Price</label>
-                <input type="number" name="pro_price" placeholder="Enter Product Price" required="" />
+                <label>Product Cost</label>
+                <input type="number" name="cost" placeholder="Enter Product Cost" required="" value="<?php echo isset($product->cost) ? $product->cost :"";?>" />
             </p>
         </div>
         <div class="col-md-2">
             <p>
-                <label>After Discount Price</label>
-                <input type="number" name="after_discount_price" placeholder="After Discount Price" required="" />
+                <label>Product Price</label>
+                <input type="number" name="price" placeholder="Enter Product Price" required="" value="<?php echo isset($product->price) ? $product->price :"";?>" />
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+                <label>Discount Perc. (%)</label>
+                <input type="text" name="discount_per" placeholder="Discount Percent" required="" value="<?php echo isset($product->discount_per) ? $product->discount_per :"";?>" />
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+                <label>Product Weight (KG)</label>
+                <input type="text" name="weight" placeholder="Product Weight" required="" value="<?php echo isset($product->weight) ? $product->weight :"";?>"  />
             </p>
         </div>
         <div class="col-md-2">
             <p>
                 <label>Product Tax</label>
-                <input type="number" name="pro_tax" placeholder="Product Tax" required="" />
-            </p>
-        </div>
-        <div class="col-md-2">
-            <p>
-                <label>Product Color</label>
-                <input type="text" name="pro_color" placeholder="Product Color" required="" />
-            </p>
-        </div>
-        <div class="col-md-2">
-            <p>
-                <label>Product Size</label>
-                <input type="text" name="pro_size" placeholder="Product Size" required="" />
+                <input type="number" name="tax" placeholder="Product Tax" required="" value="<?php echo isset($product->tax) ? $product->tax :"";?>" />
             </p>
         </div>
         <div class="col-md-2">
             <p>
                 <label>Featured Product</label>
-                <select class="form-control" name="pro_feature_product" required>
+                <select class="form-control" name="feature_product" required>
                     <option value="">--SELECT--</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                    <option value="1" <?php echo (isset($product->feature_product) && ($product->feature_product==1)) ? 'selected=""' :'';?> >Yes</option>
+                    <option value="0" <?php echo (isset($product->feature_product) && ($product->feature_product==0)) ? 'selected=""' :'';?> >No</option>
                 </select>
             </p>
         </div>
@@ -143,35 +144,49 @@ $this->load->view("admin/include/header");
         <div class="col-md-2">
             <p>
                 <label>Best Selling</label>
-                <select class="form-control" name="pro_best_selling" required>
+                <select class="form-control" name="best_selling" required>
                     <option value="">--SELECT--</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                    <option value="1" <?php echo (isset($product->best_selling) && ($product->best_selling==1)) ? 'selected=""' :'';?> >Yes</option>
+                    <option value="0" <?php echo (isset($product->best_selling) && ($product->best_selling==0)) ? 'selected=""' :'';?> >No</option>
                 </select>
             </p>
         </div>
         <div class="col-md-2">
             <p>
                 <label>Status</label>
-                <select class="form-control" name="pro_status" required>
+                <select class="form-control" name="status" required>
                     <option value=""> Select..</option>
-                    <option value="1">Enable</option>
-                    <option value="0">Disable</option>
+                    <option value="1" <?php echo (isset($product->status) && ($product->status==1)) ? 'selected=""' :'';?> >Enable</option>
+                    <option value="0" <?php echo (isset($product->status) && ($product->status==0)) ? 'selected=""' :'';?> >Disable</option>
                 </select>
             </p>
         </div>
         <div class="col-md-2">
             <p>
                 <label>Image</label>
-                <input type="file" name="pro_image" required />
+                <input type="file" name="imagefile[]" <?php echo !empty($product->sid) ? "" :'required=""';?> multiple="" />
             </p>
         </div>
         <div class="col-md-6">
             <p>
                 <label>Product Description</label>
-                <textarea name="pro_description" placeholder="Write Product Description Here" required=""></textarea>
+                <textarea name="description" placeholder="Write Product Description Here" required=""><?php echo isset($product->description) ? $product->description :"";?></textarea>
             </p>
         </div>
+        <?php
+        if(!empty($product->sid)) {
+            if(count($pro_images)) {
+                foreach ($pro_images as $key => $value) {
+        ?>
+        <div class="" style="padding: 5px;">
+            <input type="radio" name="defaultimg" />
+            <img src="<?php echo base_url("uploads/product/{$product->sid}/{$value->title}");?>" width="64" />
+        </div>
+        <?php
+                }
+            }
+        }
+        ?>
     </div>
 
     <div class="row">

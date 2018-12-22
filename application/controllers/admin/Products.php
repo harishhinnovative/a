@@ -3,12 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Products extends MY_Controller {
     
-    protected $tbl_product;
     protected $tbl_category;
+    protected $tbl_product;
+    protected $tbl_product_images;
     
     protected $current_time;
 
-    protected $upload_dir_product;
+    protected $product_upload_dir;
+
+    protected $product_img_size;
 
 
     public function __construct() {
@@ -17,10 +20,27 @@ class Products extends MY_Controller {
         $this->load->model(['Admin_model', 'Crud_model']);
         
         $this->current_time = time();
-        $this->tbl_product = "bt_product";
-        $this->tbl_category = "bt_category";
+        $this->tbl_product = "r_product";
+        $this->tbl_product_images = "r_product_images";
+        $this->tbl_category = "r_category";
 
-        $this->upload_dir_product = "uploads/product";
+        $this->product_upload_dir = "uploads/product";
+        
+        $this->product_img_size = [
+          "thumb"  => [
+             "h" => 64,
+             "w" => 64,
+          ],
+          "small"  => [
+             "h" => 256,
+             "w" => 256,
+          ],
+          "big"  => [
+             "h" => 500,
+             "w" => 500,
+          ],
+        ];
+        
     }
 
 
@@ -31,17 +51,17 @@ class Products extends MY_Controller {
   public function index() {
     $data = [];
     $option = [
-      "select" => "a.pro_id, a.pro_name, a.pro_code, a.pro_price, a.after_discount_price, a.pro_tax, a.pro_color, a.pro_size, a.pro_modal_no,"
-        . " a.pro_image, a.pro_status, a.pro_feature_product, a.pro_best_selling, b.ctg_name ",
+      "select" => "a.sid, a.title, a.inv, a.price, a.discount_per, a.tax, a.weight, a.sku, a.cost,"
+        . " a.status, a.feature_product, a.best_selling, b.title as category, c.title as imagename",
       "table" => "{$this->tbl_product} as a",
       "join" => [
-        ["{$this->tbl_category} as b", " a.pro_ctg_id = b.ctg_id ", "LEFT"],
+        ["{$this->tbl_category} as b", " a.cat_id = b.sid ", "LEFT"],
+        ["{$this->tbl_product_images} as c", " a.sid = c.pid AND (c.isdefault=1) ", "LEFT"],
       ],
-      "order" => ["pro_id" => "DESC"],
+      "order" => ["sid" => "DESC"],
     ];
     $data['products'] = $this->Crud_model->fetch_result($option);
-//    pr($data);
-    $data['image_url'] = base_url($this->upload_dir_product);
+    $data['image_url'] = base_url($this->product_upload_dir);
     
     $this->load->view('admin/product/list', $data);
   }
@@ -52,34 +72,108 @@ class Products extends MY_Controller {
  * 
  */
   public function add() {
+//      pr($this->product_img_size);
+//      
+//      foreach ($this->product_img_size as $key => $value) {
+//          echo $key;
+//          echo "<br>";
+//      }
+//      die;
+//      
+      
     $option = [
-      "select" => "a.ctg_name, a.ctg_id",
+      "select" => "a.title, a.sid",
       "table" => "{$this->tbl_category} as a",
-      "where" => ["ctg_status"=> 1],
+      "where" => ["status"=> 1],
     ];
     $data['categories'] = $this->Crud_model->fetch_result($option); // get all active category
-    $data['image_url'] = base_url($this->upload_dir_product);
+    $data['image_url'] = base_url($this->product_upload_dir);
 
     if($post = $this->input->post()) {
         $insertData =[
-            "pro_ctg_id" => $post["pro_ctg_id"],
-            "pro_name" => $post["pro_name"],
-            "pro_code" => $post["pro_code"],
-            "pro_modal_no" => $post["pro_modal_no"],
-            "pro_price" => $post["pro_price"],
-            "after_discount_price" => $post["after_discount_price"],
-            "pro_tax" => $post["pro_tax"],
-            "pro_color" => $post["pro_color"],
-            "pro_size" => $post["pro_size"],
-            "pro_feature_product" => $post["pro_feature_product"],
-            "pro_best_selling" => $post["pro_best_selling"],
-            "pro_status" => $post["pro_status"],
-            "pro_description" => $post["pro_description"],
+            "cat_id" => $post["cat_id"],
+            "title" => $post["title"],
+            "inv" => $post["inv"],
+            "sku" => $post["sku"],
+            "cost" => $post["cost"],
+            "price" => $post["price"],
+            "discount_per" => $post["discount_per"],
+            "weight" => $post["weight"],
+            "tax" => $post["tax"],
+            "feature_product" => $post["feature_product"],
+            "best_selling" => $post["best_selling"],
+            "status" => $post["status"],
+            "description" => $post["description"],
             "created_at" => $this->current_time,
         ];
-        $id = $this->Crud_model->insert_row($this->tbl_product, $insertData);
-        if($id) {
-            $this->session->set_flashdata('success', 'New product added successfully.');
+        $id = $this->Crud_model->insert_row($this->tbl_product, $insertData); // insert into product table
+        if($id) {            
+            if(!empty($_FILES['imagefile']['name']['0'])){
+                mkdir($this->product_upload_dir . "/{$id}", 0777 , true); // create new directory with product id
+                $files = $_FILES;
+                $cpt = count($_FILES['imagefile']['name']);
+                $pro_images = [];
+                $filename = $ext = "";
+                for($i=0; $i<$cpt; $i++)
+                {
+                    $_FILES['imagefile']['name']        = $files['imagefile']['name'][$i];
+                    $_FILES['imagefile']['type']        = $files['imagefile']['type'][$i];
+                    $_FILES['imagefile']['tmp_name']    = $files['imagefile']['tmp_name'][$i];
+                    $_FILES['imagefile']['error']       = $files['imagefile']['error'][$i];
+                    $_FILES['imagefile']['size']        = $files['imagefile']['size'][$i];
+
+                    $config = array();
+                    $config['upload_path']      = './' . $this->product_upload_dir . "/{$id}";
+                    
+                    $ext = pathinfo($_FILES['imagefile']['name'], PATHINFO_EXTENSION);
+                    $filename = $this->current_time ."_" .($i) .'.'. $ext;
+                    $config['file_name']        = $filename ;
+                    $config['allowed_types'] 	= 'gif|jpg|png|jpeg';
+                    $config['file_ext_tolower'] = true;
+                    $config['max_size']         = 2048;
+                    $config['max_width'] 	= 1800;
+                    $config['max_height'] 	= 1800;
+
+                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
+
+                    if (!$this->upload->do_upload('imagefile')) {
+                        $data = array('error' => $this->upload->display_errors());
+                    } else {
+                        $data = array('upload_data' => $this->upload->data());
+                        
+                        // resize the image here
+                        $this->load->library('image_lib');
+                        foreach ($this->product_img_size as $key => $value) {
+                            if(!is_dir($this->product_upload_dir . "/{$id}/{$key}")) {
+                              mkdir($this->product_upload_dir . "/{$id}/{$key}", 0777 , true); // create new directory with product id
+                            }
+                            $config = array(
+                                'source_image'      => $this->product_upload_dir . "/{$id}/{$filename}", //path to the uploaded image
+                                'new_image'         => $this->product_upload_dir . "/{$id}/{$key}", //path to
+                                'maintain_ratio'    => true,
+                                'width'             => $this->product_img_size[$key]["w"],
+                                'height'            => $this->product_img_size[$key]["h"]
+                            );
+                            $this->image_lib->initialize($config);
+                            $this->image_lib->resize();
+                        }
+ 
+                    }
+                    
+                    $pro_images[] = [
+                        "title" => $filename ,
+                        "pid" => $id,
+                        "isdefault" => ($i==0) ? 1 : 0,
+                    ];
+                }
+            }
+
+            $this->Crud_model->insertDataBatch($this->tbl_product_images, $pro_images);
+            
+            $err = ($data['error']) ? " But unexpected error occured : ".$data['error'] : "";
+            
+            $this->session->set_flashdata('success', 'New product added successfully.' . $err);
             redirect(admin_url().'products');
         }
     }
@@ -93,28 +187,46 @@ class Products extends MY_Controller {
  */
   public function edit($id) {
     $option = [
-      "select" => "a.ctg_name, a.ctg_id",
+      "select" => "a.title, a.sid",
       "table" => "{$this->tbl_category} as a",
-      "where" => ["ctg_status"=> 1],
+      "where" => ["status"=> 1],
     ];
     $data['categories'] = $this->Crud_model->fetch_result($option); // get all active category
-    $data['image_url'] = base_url($this->upload_dir_product);
+    $option1 = [
+      "select" => "a.title, a.isdefault",
+      "table" => "{$this->tbl_product_images} as a",
+      "where" => ["pid"=> $id],
+    ];
+    $data['pro_images'] = $this->Crud_model->fetch_result($option1); // get all product images
+    $data['image_url'] = base_url($this->product_upload_dir);
 
+    $option = [
+      "select" => "a.sid, a.title, a.inv, a.price, a.discount_per, a.tax, a.weight, a.sku, a.cost,"
+        . " a.status, a.feature_product, a.best_selling, b.title as category, c.title as imagename",
+      "table" => "{$this->tbl_product} as a",
+      "join" => [
+        ["{$this->tbl_category} as b", " a.cat_id = b.sid ", "LEFT"],
+        ["{$this->tbl_product_images} as c", " a.sid = c.pid AND (c.isdefault=1) ", "LEFT"],
+      ],
+      "single" => true
+    ];
+    $data['product'] = $this->Crud_model->fetch_result($option);
+    
     if($post = $this->input->post()) {
         $insertData =[
-            "pro_ctg_id" => $post["pro_ctg_id"],
-            "pro_name" => $post["pro_name"],
-            "pro_code" => $post["pro_code"],
-            "pro_modal_no" => $post["pro_modal_no"],
-            "pro_price" => $post["pro_price"],
+            "cat_id" => $post["cat_id"],
+            "name" => $post["name"],
+            "code" => $post["code"],
+            "modal_no" => $post["modal_no"],
+            "price" => $post["price"],
             "after_discount_price" => $post["after_discount_price"],
-            "pro_tax" => $post["pro_tax"],
-            "pro_color" => $post["pro_color"],
-            "pro_size" => $post["pro_size"],
-            "pro_feature_product" => $post["pro_feature_product"],
-            "pro_best_selling" => $post["pro_best_selling"],
-            "pro_status" => $post["pro_status"],
-            "pro_description" => $post["pro_description"],
+            "tax" => $post["tax"],
+            "color" => $post["color"],
+            "size" => $post["size"],
+            "feature_product" => $post["feature_product"],
+            "best_selling" => $post["best_selling"],
+            "status" => $post["status"],
+            "description" => $post["description"],
             "created_at" => $this->current_time,
         ];
         $id = $this->Crud_model->insert_row($this->tbl_product, $insertData);
@@ -133,7 +245,9 @@ class Products extends MY_Controller {
  */
   public function delete($id='') {
     if(!empty($id)) {
-        if($this->Crud_model->delete_row($this->tbl_product, ['pro_id'=> $id])) {
+        if($this->Crud_model->delete_row($this->tbl_product, ['sid'=> $id])) {
+            $this->Crud_model->delete_row($this->tbl_product_images, ['pid'=> $id]); // delete product image entry from table
+            exec("rm uploads/product/$id -rf"); // remove product images too
             $this->session->set_flashdata('success', 'Product deleted successfully.');
             redirect(admin_url().'products');
         }
@@ -161,37 +275,37 @@ class Products extends MY_Controller {
             $best_selling = 1;
         }
 
-        $id = $this->input->post('pro_id');
+        $id = $this->input->post('id');
         //image upload start
         $config['upload_path'] = './assets/admin/assets/img/product';
         $config['allowed_types'] = 'gif|jpg|png|jpeg';
         $config['max_size'] = 30000;
 
         $this->load->library('upload', $config);
-        if ($_FILES['pro_img']['size'] > 0) {
-            if (!$this->upload->do_upload('pro_img')) {
+        if ($_FILES['img']['size'] > 0) {
+            if (!$this->upload->do_upload('img')) {
 
                 $this->session->set_flashdata('error', $this->upload->display_errors());
                 redirect(admin_url() . 'catalog/productEdit/' . $id);
             } else {
                 $data = array('upload_data' => $this->upload->data());
-                $pro_image = $this->upload->data('file_name');
+                $image = $this->upload->data('file_name');
 
 //image upload end
             }
         } else {
-            $pro_image = $this->input->post('pro_image1');
+            $image = $this->input->post('image1');
         }
 
         $payload = array(
-            'pro_name' => $this->input->post('pro_name'),
-            'pro_ctg_id' => $this->input->post('cat_under'),
-            'pro_price' => $this->input->post('pro_price'),
-            'pro_status' => $this->input->post('pro_status'),
-            'pro_description' => $this->input->post('pro_desc'),
-            'pro_feature_product' => $featured_pro,
-            'pro_best_selling' => $best_selling,
-            'pro_image' => $pro_image
+            'name' => $this->input->post('name'),
+            'cat_id' => $this->input->post('cat_under'),
+            'price' => $this->input->post('price'),
+            'status' => $this->input->post('status'),
+            'description' => $this->input->post('desc'),
+            'feature_product' => $featured_pro,
+            'best_selling' => $best_selling,
+            'image' => $image
         );
 
         $userid = $this->Admin_model->updateProduct($id, $payload);
@@ -245,7 +359,7 @@ class Products extends MY_Controller {
         );
 
 //        $userid = $this->Admin_model->updateCategory($id, $payload);
-        $insertid = $this->Crud_model->update_row($this->tbl_category, $payload, ['ctg_id'=> $id]);
+        $insertid = $this->Crud_model->update_row($this->tbl_category, $payload, ['cat_id'=> $id]);
         if ($insertid) {
             $this->session->set_flashdata('success', 'Category is Updated successfully');
             redirect(admin_url() . 'catalog/categories');
@@ -276,23 +390,23 @@ class Products extends MY_Controller {
 
         $this->load->library('upload', $config);
 
-        if (!$this->upload->do_upload('pro_img')) {
+        if (!$this->upload->do_upload('img')) {
 
             $this->session->set_flashdata('error', $this->upload->display_errors());
             redirect(admin_url() . 'catalog/addproduct');
         } else {
             $data = array('upload_data' => $this->upload->data());
-            $pro_image = $this->upload->data('file_name');
+            $image = $this->upload->data('file_name');
             //image upload end
             $payload = array(
-                'pro_name' => $this->input->post('pro_name'),
-                'pro_ctg_id' => $this->input->post('cat_under'),
-                'pro_price' => $this->input->post('pro_price'),
-                'pro_status' => $this->input->post('pro_status'),
-                'pro_description' => $this->input->post('pro_desc'),
-                'pro_feature_product' => $featured_pro,
-                'pro_best_selling' => $best_selling,
-                'pro_image' => $pro_image
+                'name' => $this->input->post('name'),
+                'cat_id' => $this->input->post('cat_under'),
+                'price' => $this->input->post('price'),
+                'status' => $this->input->post('status'),
+                'description' => $this->input->post('desc'),
+                'feature_product' => $featured_pro,
+                'best_selling' => $best_selling,
+                'image' => $image
             );
 
             $userid = $this->Admin_model->insertProduct($payload);

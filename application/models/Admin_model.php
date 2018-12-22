@@ -195,7 +195,7 @@ function customersenabledisable($id, $status)
   /** Update Query For Category**/
   function updateCategory($id,$data){
     $this->db->where('ctg_id', $id);
-    $userid=$this->db->update('bt_category', $data);
+    $userid=$this->db->update('r_category', $data);
     return $userid;
 }
 
@@ -210,7 +210,7 @@ function customersenabledisable($id, $status)
     function fetchParticularCategory($ctgID)
     {
         $this->db->select('*');
-        $this->db->from('bt_category');
+        $this->db->from('r_category');
         $this->db->where('ctg_id', $ctgID);
         $q = $this->db->get();
         $row = $q->result();
@@ -249,7 +249,7 @@ function fetchParticularProductByName($pro_name)
             'ctg_image' => $cat_img
 
         );
-        $this->db->insert('bt_category', $data);
+        $this->db->insert('r_category', $data);
         $userid = $this->db->insert_id();
         return $userid;
     }
@@ -266,7 +266,7 @@ function fetchParticularProductByName($pro_name)
     function categorylist()
     {
         $this->db->select('*');
-        $this->db->from('bt_category');
+        $this->db->from('r_category');
 
         $q = $this->db->get();
         $row = $q->result();
@@ -277,7 +277,7 @@ function fetchParticularProductByName($pro_name)
     function categoryName($pro_ctg_id)
     {
         $this->db->select('ctg_name');
-        $this->db->from('bt_category');
+        $this->db->from('r_category');
         $this->db->where('ctg_id',$pro_ctg_id);
         $q = $this->db->get();
         $row = $q->result();
@@ -288,7 +288,7 @@ function fetchParticularProductByName($pro_name)
     function subcategorylist()
     {
         $this->db->select('*');
-        $this->db->from('bt_category');
+        $this->db->from('r_category');
         $this->db->where('ctg_under !=','NONE');
         $q = $this->db->get();
         $row = $q->result();
@@ -299,7 +299,7 @@ function fetchParticularProductByName($pro_name)
     function subcategorylistbycatid($id)
     {
         $this->db->select('*');
-        $this->db->from('bt_category');
+        $this->db->from('r_category');
         $this->db->where('ctg_under',$id);
         $q = $this->db->get();
         $row = $q->result();
@@ -310,7 +310,7 @@ function fetchParticularProductByName($pro_name)
     function maincategorylist()
     {
         $this->db->select('*');
-        $this->db->from('bt_category');
+        $this->db->from('r_category');
         $this->db->where('ctg_under','NONE');
         $q = $this->db->get();
         $row = $q->result();
@@ -337,7 +337,7 @@ function fetchParticularProductByName($pro_name)
         $this->db->select('*');
         $this->db->from('bt_product as pro');
 
-        $this->db->join('bt_category as cat', 'pro.pro_ctg_id  = cat.ctg_id', 'left');
+        $this->db->join('r_category as cat', 'pro.pro_ctg_id  = cat.ctg_id', 'left');
 
         $q = $this->db->get();
         $row = $q->result();
@@ -405,7 +405,7 @@ function fetchParticularProductByName($pro_name)
         );
 
         $this->db->where('ctg_id', $id);
-        $query = $this->db->update('bt_category', $data);
+        $query = $this->db->update('r_category', $data);
         return $query;
     }
 
@@ -414,7 +414,7 @@ function fetchParticularProductByName($pro_name)
 
 
         $this->db->where('ctg_id', $id);
-        $this->db->delete('bt_category');
+        $this->db->delete('r_category');
         return true;
     }
 

@@ -38,11 +38,11 @@
    <body>
        
       <!-- Start Page Loading -->
-      <div id="loader-wrapper">
+<!--      <div id="loader-wrapper">
          <div id="loader"></div>
          <div class="loader-section section-left"></div>
          <div class="loader-section section-right"></div>
-      </div>
+      </div>-->
       <!-- End Page Loading -->
        
       <!-- Wrapper Start -->
@@ -52,7 +52,7 @@
              
             <!-- Logo Start -->
             <div class="seipkon-logo">
-               <a href="index-2.html">
+                <a href="<?php echo admin_url(); ?>">
                <img src="<?php echo logo_url(); ?>" alt="logo">
                </a>
             </div>
