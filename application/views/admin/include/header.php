@@ -52,7 +52,7 @@
              
             <!-- Logo Start -->
             <div class="seipkon-logo">
-                <a href="<?php echo admin_url(); ?>">
+                <a href="<?php echo admin_url()."dashboard"; ?>">
                <img src="<?php echo logo_url(); ?>" alt="logo">
                </a>
             </div>

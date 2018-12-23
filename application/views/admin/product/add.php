@@ -67,7 +67,7 @@ $this->load->view("admin/include/header");
                     <?php
                     if(count($categories)) {
                       foreach ($categories as $cat) {
-                          $selected = (isset($product->best_selling) && ($product->best_selling==1)) ? 'selected=""' :'';
+                          $selected = (isset($product->cat_id) && ($product->cat_id==$cat->sid)) ? 'selected=""' :'';
                       ?>
                         <option value="<?php echo $cat->sid; ?>" <?php echo $selected; ?>><?php echo $cat->title; ?></option>
                     <?php
@@ -173,13 +173,15 @@ $this->load->view("admin/include/header");
                 <textarea name="description" placeholder="Write Product Description Here" required=""><?php echo isset($product->description) ? $product->description :"";?></textarea>
             </p>
         </div>
+    </div>
+    <div class="row">
         <?php
         if(!empty($product->sid)) {
             if(count($pro_images)) {
                 foreach ($pro_images as $key => $value) {
         ?>
-        <div class="" style="padding: 5px;">
-            <input type="radio" name="defaultimg" />
+        <div class="col-md-1" style="padding: 5px; <?php if($value->isdefault) {?>border: dashed #ccc;<?php }?>">
+            <input type="radio" name="defaultimg" value="<?php echo $value->sid?>" <?php if($value->isdefault) {?> checked="" <?php }?> />
             <img src="<?php echo base_url("uploads/product/{$product->sid}/{$value->title}");?>" width="64" />
         </div>
         <?php

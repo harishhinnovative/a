@@ -14,9 +14,9 @@ $this->load->view("admin/include/header");
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <div class="seipkon-breadcromb-left">
-                                    <h3>Products Listing
+                                    <h3>Category Listing
                                         <div class="btn-group pull-right">
-                                            <a href="<?php echo admin_url(); ?>products/add"> <button class="btn btn-info"> Add New <i class="fa fa-plus"></i></button></a>
+                                            <a href="<?php echo admin_url(); ?>category/add"> <button class="btn btn-info"> Add New <i class="fa fa-plus"></i></button></a>
                                         </div>
                                     </h3>
                                 </div>
@@ -56,17 +56,8 @@ $this->load->view("admin/include/header");
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th> Category </th>
-                            <th> Product Name </th>
-                            <th>SKU</th>
-                            <th>INV</th>
-                            <th>Cost</th>
-                            <th>Price </th>
-                            <th>Discount<br>Percent</th>
-                            <th>Weight</th>
-                            <th>Tax</th>
-                            <th>Featured</th>
-                            <th>Best Selling</th>
+                            <th>Category Name </th>
+                            <th>Description</th>
                             <th>Status</th>
                             <th>Image</th>
                             <th> Action </th>
@@ -75,38 +66,29 @@ $this->load->view("admin/include/header");
                     <tbody>
 <?php
 $i = 1;
-if(count($products)) {
-  foreach ($products as $pro) {
+if(count($category)) {
+  foreach ($category as $pro) {
 ?>
     <tr>
         <td><?php echo $rowSerialNumber+$i; ?></td>
-        <td><?php echo $pro->category; ?></td>
         <td><?php echo $pro->title; ?></td>
-        <td><?php echo $pro->sku; ?></td>
-        <td><?php echo $pro->inv; ?></td>
-        <td><?php echo $pro->cost; ?></td>
-        <td><?php echo $pro->price; ?></td>
-        <td><?php echo $pro->discount_per; ?>%</td>
-        <td><?php echo $pro->weight; ?></td>
-        <td><?php echo $pro->tax; ?></td>
-        <td><?php echo ($pro->feature_product==1) ? "Yes" : "No"; ?></td>
-        <td><?php echo ($pro->best_selling==1) ? "Yes" : "No"; ?></td>
+        <td><?php echo $pro->description; ?></td>
         <td><?php echo ($pro->status == 1) ? 'Enable' : 'Disable'; ?></td>
-        <td><img src="<?php echo $image_url ."/{$pro->sid}/thumb/". $pro->imagename; ?>" alt="product image" width="16" onerror="this.src='<?php echo base_url("assets/images/noimage.jpg")?>'" /></td>
+        <td><img src="<?php echo $image_url ."/{$pro->sid}/thumb/". $pro->imagename; ?>" alt="category image" width="16" onerror="this.src='<?php echo base_url("assets/images/noimage.jpg")?>'" /></td>
         <td>
-        <a href="<?php echo admin_url() . 'products/edit/' . $pro->sid; ?>" class="product-table-info" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil"></i></a>
+        <a href="<?php echo admin_url() . 'category/edit/' . $pro->sid; ?>" class="product-table-info" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil"></i></a>
 <?php
 if ($pro->status == 0) {
 ?>
-<a class="btn btn-sm btn-danger" title="Enable" href="<?php echo admin_url() . 'products/enabledisable/' . $pro->sid . '/1'; ?>"
+<a class="btn btn-sm btn-danger" title="Enable" href="<?php echo admin_url() . 'category/enabledisable/' . $pro->sid . '/1'; ?>"
    onclick="return confirm('Are you sure to perform this action?');" ><i class="fa fa-eye-slash btn-danger"></i></a>
 <?php
 } else {
 ?>
-<a class="btn btn-sm btn-success" title="Disable" href="<?php echo admin_url() . 'products/enabledisable/' . $pro->sid . '/0'; ?>"
+<a class="btn btn-sm btn-success" title="Disable" href="<?php echo admin_url() . 'category/enabledisable/' . $pro->sid . '/0'; ?>"
   onclick="return confirm('Are you sure to perform this action?');"  ><i class="fa fa-eye"></i></a>
 <?php } ?>
-<a href="<?php echo admin_url() . 'products/delete/' . $pro->sid;?>" onclick="return confirm('Are you sure to perform this action?');" class="product-table-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></a>
+<a href="<?php echo admin_url() . 'category/delete/' . $pro->sid;?>" onclick="return confirm('Are you sure to perform this action?');" class="product-table-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></a>
         </td>
     </tr>
     <?php
