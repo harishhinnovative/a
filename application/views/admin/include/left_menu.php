@@ -1,3 +1,6 @@
+<?php
+$pagename = "";
+?>
 <!-- Sidebar Start -->
 <aside class="seipkon-main-sidebar">
     <nav id="sidebar">
@@ -17,20 +20,29 @@
         <div class="menu-section">
             <h3>General</h3>
             <ul class="list-unstyled components">
-                <li class="active">
-                    <a href="<?php echo admin_url(); ?>">
+                <li class="">
+                    <a href="<?php echo admin_url(). "dashboard"; ?>">
                         <i class="fa fa-dashboard"></i>
                         Dashboard
                     </a>
                 </li>
-                <li>
-                    <a href="#ecommerce" data-toggle="collapse" aria-expanded="false">
-                        <i class="fa fa-shopping-cart"></i>
-                        Catalog
-                    </a>
-                    <ul class="collapse list-unstyled" id="ecommerce">
-                        <li class="nav-item  ">
-                            <a href="<?php echo admin_url(); ?>catalog/categories" class="nav-link ">
+                <li class="active expander">
+                    <a href="#ecommerce" data-toggle="collapse"
+                       <?php if(($pagename=="products") || ($pagename=="category")) {?>
+                       aria-expanded="true"
+                       class=""
+                       <?php } ?>
+                       ><i class="fa fa-shopping-cart"></i>Catalog</a>
+
+                    <ul
+                       <?php if(($pagename=="products") || ($pagename=="category")) {?>
+                        class="collapse list-unstyled"
+                       <?php } else { ?>
+                        class="list-unstyled collapse in"
+                       <?php } ?>
+                        id="ecommerce">
+                        <li class="nav-item active">
+                            <a href="<?php echo admin_url(); ?>category" class="nav-link active">
                                 <span class="title">Categories</span>
                             </a>
                         </li>
