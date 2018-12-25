@@ -16,7 +16,7 @@ class Catalog extends CI_Controller {
         $this->load->model(['Admin_model', 'Crud_model']);
         
         $this->current_time = time();
-        $this->tbl_category = "bt_category";
+        $this->tbl_category = "r_category";
 
         $this->upload_dir_category = "./uploads/category";
         

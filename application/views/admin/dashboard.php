@@ -1,5 +1,6 @@
-
-<?php include('include/header.php'); ?>
+<?php
+$this->load->view("admin/include/header");
+?>
           
          <!-- Right Side Content Start -->
          <section id="content" class="seipkon-content-wrapper">
@@ -19,7 +20,7 @@
                               <div class="col-md-6 col-sm-6">
                                  <div class="seipkon-breadcromb-right">
                                     <ul>
-                                       <li><a href="index-2.html">home</a></li>
+                                      <li><a href="<?php echo admin_url()?>">home</a></li>
                                        <li>dashboard</li>
                                     </ul>
                                  </div>
@@ -100,4 +101,6 @@
             </div>
              
             <!-- Footer Area Start -->
-        <?php include('include/footer.php'); ?>
+<?php
+$this->load->view("admin/include/footer");
+?>
