@@ -8,15 +8,15 @@
 		<!-- CSS files
 		============================================ -->
 		<!-- Boostrap stylesheet -->
-		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/bootstrap.min.css')?>">
+		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/bootstrap.min.css');?>">
 		<!-- Master stylesheet -->
-		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/style.css')?>">
-		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/main.css')?>">
-		<link rel="stylesheet" type="text/css" href="<?=base_url('assets/front/CSS/owl.carousel.min.css')?>">
+		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/style.css');?>">
+		<link rel="stylesheet" href="main.css">
+		<link rel="stylesheet" type="text/css" href="<?=base_url('assets/front/CSS/owl.carousel.min.css');?>">
 		<!-- Responsive stylesheet -->
-		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/responsive.css')?>">
-		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/pe-icon-7-stroke.css')?>">
-		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/ionicons.min.css')?>">
+		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/responsive.css');?>">
+		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/pe-icon-7-stroke.css');?>">
+		<link rel="stylesheet" href="<?=base_url('assets/front/CSS/ionicons.min.css');?>">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 	</head>
 	<body>
@@ -64,22 +64,16 @@
 				<div class="container">
 					<div class="row">
 						<div class="logo col-xs-12 col-sm-3 col-md-2 col-lg-2">
-							<img src="images/logo.png" alt="logo">
+							<img src="images/logo33.png" alt="logo">
 						</div>
 						<div class="nav_menu col-xs-12 col-sm-12 col-md-10 col-lg-10">
 							<ul>
 								<li><a href="product.html">Architectural & Salvage</a></li>
-								<li><a href="">Art</a></li>
-								<li><a href="">Ceramics</a></li>
-								<li><a href="">Furniture</a></li>
-								<li><a href="">Glassware</a></li>
-								<li><a href="">Jewellery</a></li>
-								<li><a href="">Silver</a></li>
+								<li><a href="<?=base_url('relic')?>">Relic</a></li>
+								<li><a href="<?=base_url('unique')?>">unique</a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
-			</header>
-                    
-                    <!-- Header Ends Here -->
+			</header><!-- /header -->
