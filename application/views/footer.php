@@ -1,4 +1,4 @@
-							<footer>
+<footer>
 								<div class="container">
 								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 									<div class="row">
@@ -62,11 +62,11 @@
                         <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                             <div class="footer-payment">
                                 <ul>
-                                    <li><a href="#"><img src="<?=base_url('assets/front/images/payment-2.jpg')?>" alt="Payment Icons"></a></li>
-                                    <li><a href="#"><img src="<?=base_url('assets/front/images/payment-3.jpg')?>" alt="Payment Icons"></a></li>
-                                    <li><a href="#"><img src="<?=base_url('assets/front/images/payment-4.jpg')?>" alt="Payment Icons"></a></li>
-                                    <li><a href="#"><img src="<?=base_url('assets/front/images/payment-5.jpg')?>" alt="Payment Icons"></a></li>
-                                    <li><a href="#"><img src="<?=base_url('assets/front/images/payment-6.jpg')?>" alt="Payment Icons"></a></li>
+                                    <li><a href="#"><img src="images/payment-2.jpg" alt="Payment Icons"></a></li>
+                                    <li><a href="#"><img src="images/payment-3.jpg" alt="Payment Icons"></a></li>
+                                    <li><a href="#"><img src="images/payment-4.jpg" alt="Payment Icons"></a></li>
+                                    <li><a href="#"><img src="images/payment-5.jpg" alt="Payment Icons"></a></li>
+                                    <li><a href="#"><img src="images/payment-6.jpg" alt="Payment Icons"></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -76,10 +76,10 @@
 </footer>
 
 							<!-- jQuery JS -->
-							<script src="<?=base_url('assets/front/js/jquery.min.js')?>"></script>
+							<script src="<?=base_url('assets/front/js/jquery.min.js');?>"></script>
 							<!-- Bootstrap JS -->
-							<script src="<?=base_url('assets/front/js/bootstrap.min.js.download')?>"></script>
-							<script src="<?=base_url('assets/front/js/main.js')?>" type="text/javascript"></script>
-							<script src="<?=base_url('assets/front/js/owl.carousel.min.js')?>" type="text/javascript"></script>
+							<script src="<?=base_url('assets/front/js/bootstrap.min.js.download');?>"></script>
+							<script src="<?=base_url('assets/front/js/main.js');?>" type="text/javascript"></script>
+							<script src="<?=base_url('assets/front/js/owl.carousel.min.js');?>" type="text/javascript"></script>
 						</body>
 					</html>

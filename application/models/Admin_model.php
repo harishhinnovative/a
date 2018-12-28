@@ -142,12 +142,16 @@ function insertSubUser($data){
     /*  Admin End */
     /**Customers List */
     function customersList(){
+        return 1;
+        /*
         $this->db->select('*');
         $this->db->from('bt_customer');
 
         $q = $this->db->get();
         $row = $q->result();
         return $row;
+         * 
+         */
     }
 /**Customers Enable/Disable */
 function customersenabledisable($id, $status)
