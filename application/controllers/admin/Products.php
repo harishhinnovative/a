@@ -253,7 +253,13 @@ class Products extends MY_Controller {
         ];
         $this->Crud_model->update_row($this->tbl_product, $insertData, ["sid"=> $id]);
         if(!empty($_FILES['imagefile']['name']['0'])){
-            mkdir($this->product_upload_dir . "/{$id}", 0777 , true); // create new directory with product id
+
+            // delete the old db entry and images from folder
+            $this->Crud_model->delete_row($this->tbl_product_images, ['pid'=> $id]); // delete product image entry from table
+            exec("rm uploads/product/$id -rf"); // remove product images too
+
+            mkdir($this->product_upload_dir . "/{$id}", 0777); // create new directory with product id
+                          
             $files = $_FILES;
             $cpt = count($_FILES['imagefile']['name']);
             $pro_images = [];
@@ -305,20 +311,21 @@ class Products extends MY_Controller {
 
                 }
 
-                // delete the old db entry and images from folder
-                $this->Crud_model->delete_row($this->tbl_product_images, ['pid'=> $id]); // delete product image entry from table
-                exec("rm uploads/product/$id -rf"); // remove product images too
-
                 $pro_images[] = [
                     "title" => $filename ,
                     "pid" => $id,
                     "isdefault" => ($i==0) ? 1 : 0,
                 ];
             }
-        }
-        if(!empty($post['defaultimg'])) {
+        } else {
+//          if(!empty($post['defaultimg'])) {
             $this->Crud_model->update_row($this->tbl_product_images, ['isdefault'=> 0], ["pid"=> $id]); // set other to zero
             $this->Crud_model->update_row($this->tbl_product_images, ['isdefault'=> 1], ["sid"=> $post['defaultimg']]); // set new image as default selection
+//          }
+        }
+        
+        if(count($pro_images)) {
+            $this->Crud_model->insertDataBatch($this->tbl_product_images, $pro_images);
         }
 
         $this->session->set_flashdata('success', 'Item updated successfully.');
