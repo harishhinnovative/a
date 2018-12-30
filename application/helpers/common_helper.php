@@ -16,3 +16,7 @@ function getSortDes($des){
     $sortdes = substr($des,100)."...";
     return $sortdes;
 }
+
+function strToUrl($str) {
+    return str_replace([" ","`","~","!","@","#","$","%","^","&","*","(",")","=","+","_",",",".","/","\\",":",";","'",'"',"|"], "-", strtolower($str));
+}
