@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Category extends MY_Controller {
+class Category extends Admin_panel {
     
     protected $tbl_category;
     
