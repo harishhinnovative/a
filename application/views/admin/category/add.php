@@ -70,15 +70,6 @@ $this->load->view("admin/include/header");
                 <label>Image</label>
                 <input type="file" name="imagefile" <?php echo !empty($category->sid) ? "" :'required=""';?> multiple="" />
             </p>
-            <?php
-            if(!empty($category->sid)) {
-            ?>
-            <div class="col-md-3" style="padding: 5px;">
-                <img src="<?php echo base_url("uploads/category/{$category->sid}/{$category->imagename}");?>" width="64" />
-            </div>
-            <?php
-            }
-            ?>
         </div>
         <div class="col-md-2">
             <p>
@@ -96,6 +87,17 @@ $this->load->view("admin/include/header");
                 <textarea name="description" placeholder="Write Category Description Here" required=""><?php echo isset($category->description) ? $category->description :"";?></textarea>
             </p>
         </div>
+    </div>
+    <div class="row">
+        <?php
+        if(!empty($category->sid)) {
+        ?>
+        <div class="col-md-1" style="padding: 5px;">
+            <img src="<?php echo base_url("uploads/category/{$category->sid}/{$category->imagename}");?>" width="64" />
+        </div>
+        <?php
+        }
+        ?>
     </div>
 
     <div class="row">

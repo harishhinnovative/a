@@ -18,7 +18,7 @@
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-3">	
 					
-					<h4 class="widgettitle">Infortmation</h4>
+					<h4 class="widgettitle">Information</h4>
 					<ul>
 						<li><a href="">My Account</a></li>
 						<li><a href="">About Us</a></li>

@@ -102,13 +102,9 @@ $pagename = "";
                 </li>
                 <?php if ($this->session->userdata['role'] == 'admin') { ?>
                     <li>
+
                         <a href="<?php echo admin_url(); ?>Admin_profile/users" class="nav-link ">
                             <i class="fa fa-users"></i> Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo admin_url(); ?>cms" class="nav-link">
-                            <i class="fa fa-file"></i> Cms Pages
                         </a>
                     </li>
                 <?php } ?>

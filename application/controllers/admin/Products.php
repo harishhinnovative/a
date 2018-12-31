@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Products extends MY_Controller {
+class Products extends Admin_panel {
     
     protected $tbl_category;
     protected $tbl_product;
