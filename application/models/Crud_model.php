@@ -12,32 +12,13 @@ class Crud_model extends CI_Model {
         return $this->db->insert_id(); // will return the new inserted id
     }
 
-    public function fetch_row($table, $columns, array $where, $whereCustom = '', $limit = 0, $offset = 0) {
-        $column = ($columns) ? $columns : "*";
-        $this->db->select($column);
-        $this->db->from($table);
-        if (count($where)) {
-            foreach ($where as $key => $value) {
-                $this->db->where($key, $value);
-            }
-        }
-        if ($whereCustom) {
-            $this->db->where($whereCustom);
-        }
-        if ($limit) {
-            $this->db->limit($limit, $offset);
-        }
-        $query = $this->db->get();
-        return $query->result();
-    }
-
     // update row from table
     public function update_row($table, array $data, array $where) {
         foreach ($where as $key => $value) {
             $this->db->where("$key", "$value");
         }
-        return $this->db->update($table, $data);
-//        return $this->db->affected_rows();  // will return number of rows affected or 0 if not
+        $this->db->update($table, $data);
+        return $this->db->affected_rows();  // will return number of rows affected or 0 if not
     }
 
     // delete row from table
