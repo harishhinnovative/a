@@ -2,13 +2,10 @@
 <div class="front-banner mb-half">
 				<div class="fadeOut1 owl-carousel owl-theme">
 					<div class="item">
-						<img src="images/homepage-banner-2.jpg" alt="banner">
+						<img src="<?php echo base_url('assets/front/images/Banner-01.jpg') ?>" alt="banner">
 					</div>
 					<div class="item">
-						<img src="images/homepage-banner-3.jpg" alt="banner">
-					</div>
-					<div class="item">
-						<img src="images/homepage-banner-1.jpg" alt="banner">
+						<img src="<?php echo base_url('assets/front/images/Banner-02.jpg') ?>" alt="banner">
 					</div>
 				</div>
 			</div>
@@ -75,24 +72,29 @@
 								<div class="row">
         <div class="col-xs-12 col-md-12 col-lg-12 shop-products-wrapper">
           <div class="owl-carousel owl-theme">
-            <div class="item">
+            <?php foreach($bestSell as $sdet) {
+                        $realprice  = getActualPrice($sdet->price,$sdet->discount_per);
+                        $imgurl     = base_url('uploads/product/'.$sdet->sid.'/big/'.$sdet->title);
+                        $getSortDes  = getSortDes($sdet->description);
+                ?>
+              <div class="item">
               <div class="product-layout product-grid">
 									<div class="product-thumb">
 										<div class="product-inner">
 											<div class="product-image">
 												
 												<a href="single-product.html">
-													<img src="<?=base_url('assets/front/images/product2.jpg');?>" alt="product">
+													<img src="<?=$imgurl;?>" alt="<?=$sdet->title;?>">
 												</a>
 												</div> <!-- end of product-image -->
 												<div class="product-caption">
-													<h4 class="product-name"><a href="single-product.html">Teddies Hugging Soft Toy</a></h4>
+													<h4 class="product-name"><a href="single-product.html"><?=$sdet->ptitle; ?></a></h4>
 													<p class="product_cont"><a href="">
-													Gift the cuddly and cute white teddy bear with a brown bow with a personalized picture in heart shape.</a> 
+													<?=$getSortDes;?></a> 
 												</p>
 													<p class="product-price">
-														<span class="price-old">Rs.1330.00</span>
-														<span class="price-new">Rs.1120.00</span>
+														<span class="price-old">Rs.<?=$fdet->price; ?></span>
+														<span class="price-new">Rs.<?=$realprice; ?></span>
 													</p>
 													</div><!-- end of product-caption -->
 													</div><!-- end of product-inner -->
@@ -100,181 +102,8 @@
 												</div>
 												<!-- end of product-layout -->
             </div>
-            <div class="item">
-              <div class="product-layout product-grid">
-									<div class="product-thumb">
-										<div class="product-inner">
-											<div class="product-image">
-												
-												<a href="single-product.html">
-													<img src="<?=base_url('assets/front/images/product3.jpg');?>" alt="product">
-												</a>
-												</div> <!-- end of product-image -->
-												<div class="product-caption">
-													<h4 class="product-name"><a href="single-product.html">Teddies Hugging Soft Toy</a></h4>
-													<p class="product_cont"><a href="">
-													Gift the cuddly and cute white teddy bear with a brown bow with a personalized picture in heart shape.</a> 
-												</p>
-													<p class="product-price">
-														<span class="price-old">Rs.1330.00</span>
-														<span class="price-new">Rs.1120.00</span>
-													</p>
-													</div><!-- end of product-caption -->
-													</div><!-- end of product-inner -->
-													</div><!-- end of product-thumb -->
-												</div>
-												<!-- end of product-layout -->
-            </div>
-            <div class="item">
-              <div class="product-layout product-grid">
-									<div class="product-thumb">
-										<div class="product-inner">
-											<div class="product-image">
-												
-												<a href="single-product.html">
-													<img src="<?=base_url('assets/front/images/product1.jpg');?>" alt="product">
-												</a>
-												</div> <!-- end of product-image -->
-												<div class="product-caption">
-													<h4 class="product-name"><a href="single-product.html">Teddies Hugging Soft Toy</a></h4>
-													<p class="product_cont"><a href="">
-													Gift the cuddly and cute white teddy bear with a brown bow with a personalized picture in heart shape.</a> 
-												</p>
-													<p class="product-price">
-														<span class="price-old">Rs.1330.00</span>
-														<span class="price-new">Rs.1120.00</span>
-													</p>
-													</div><!-- end of product-caption -->
-													</div><!-- end of product-inner -->
-													</div><!-- end of product-thumb -->
-												</div>
-												<!-- end of product-layout -->
-            </div>
-            <div class="item">
-              <div class="product-layout product-grid">
-									<div class="product-thumb">
-										<div class="product-inner">
-											<div class="product-image">
-												
-												<a href="single-product.html">
-													<img src="<?=base_url('assets/front/images/product2.jpg');?>" alt="product">
-												</a>
-												</div> <!-- end of product-image -->
-												<div class="product-caption">
-													<h4 class="product-name"><a href="single-product.html">Teddies Hugging Soft Toy</a></h4>
-													<p class="product_cont"><a href="">
-													Gift the cuddly and cute white teddy bear with a brown bow with a personalized picture in heart shape.</a> 
-												</p>
-													<p class="product-price">
-														<span class="price-old">Rs.1330.00</span>
-														<span class="price-new">Rs.1120.00</span>
-													</p>
-													</div><!-- end of product-caption -->
-													</div><!-- end of product-inner -->
-													</div><!-- end of product-thumb -->
-												</div>
-												<!-- end of product-layout -->
-            </div>
-            <div class="item">
-              <div class="product-layout product-grid">
-									<div class="product-thumb">
-										<div class="product-inner">
-											<div class="product-image">
-												
-												<a href="single-product.html">
-													<img src="<?=base_url('assets/front/images/product2.jpg');?>" alt="product">
-												</a>
-												</div> <!-- end of product-image -->
-												<div class="product-caption">
-													<h4 class="product-name"><a href="single-product.html">Teddies Hugging Soft Toy</a></h4>
-													<p class="product_cont"><a href="">
-													Gift the cuddly and cute white teddy bear with a brown bow with a personalized picture in heart shape.</a> 
-												</p>
-													<p class="product-price">
-														<span class="price-old">Rs.1330.00</span>
-														<span class="price-new">Rs.1120.00</span>
-													</p>
-													</div><!-- end of product-caption -->
-													</div><!-- end of product-inner -->
-													</div><!-- end of product-thumb -->
-												</div>
-												<!-- end of product-layout -->
-            </div>
-            <div class="item">
-              <div class="product-layout product-grid">
-									<div class="product-thumb">
-										<div class="product-inner">
-											<div class="product-image">
-												
-												<a href="single-product.html">
-													<img src="<?=base_url('assets/front/images/product2.jpg');?>" alt="product">
-												</a>
-												</div> <!-- end of product-image -->
-												<div class="product-caption">
-													<h4 class="product-name"><a href="single-product.html">Teddies Hugging Soft Toy</a></h4>
-													<p class="product_cont"><a href="">
-													Gift the cuddly and cute white teddy bear with a brown bow with a personalized picture in heart shape.</a> 
-												</p>
-													<p class="product-price">
-														<span class="price-old">Rs.1330.00</span>
-														<span class="price-new">Rs.1120.00</span>
-													</p>
-													</div><!-- end of product-caption -->
-													</div><!-- end of product-inner -->
-													</div><!-- end of product-thumb -->
-												</div>
-												<!-- end of product-layout -->
-            </div>
-            <div class="item">
-              <div class="product-layout product-grid">
-									<div class="product-thumb">
-										<div class="product-inner">
-											<div class="product-image">
-												
-												<a href="single-product.html">
-													<img src="<?=base_url('assets/front/images/product2.jpg');?>" alt="product">
-												</a>
-												</div> <!-- end of product-image -->
-												<div class="product-caption">
-													<h4 class="product-name"><a href="single-product.html">Teddies Hugging Soft Toy</a></h4>
-													<p class="product_cont"><a href="">
-													Gift the cuddly and cute white teddy bear with a brown bow with a personalized picture in heart shape.</a> 
-												</p>
-													<p class="product-price">
-														<span class="price-old">Rs.1330.00</span>
-														<span class="price-new">Rs.1120.00</span>
-													</p>
-													</div><!-- end of product-caption -->
-													</div><!-- end of product-inner -->
-													</div><!-- end of product-thumb -->
-												</div>
-												<!-- end of product-layout -->
-            </div>
-            <div class="item">
-              <div class="product-layout product-grid">
-									<div class="product-thumb">
-										<div class="product-inner">
-											<div class="product-image">
-												
-												<a href="single-product.html">
-													<img src="<?=base_url('assets/front/images/product2.jpg');?>" alt="product">
-												</a>
-												</div> <!-- end of product-image -->
-												<div class="product-caption">
-													<h4 class="product-name"><a href="single-product.html">Teddies Hugging Soft Toy</a></h4>
-													<p class="product_cont"><a href="">
-													Gift the cuddly and cute white teddy bear with a brown bow with a personalized picture in heart shape.</a> 
-												</p>
-													<p class="product-price">
-														<span class="price-old">Rs.1330.00</span>
-														<span class="price-new">Rs.1120.00</span>
-													</p>
-													</div><!-- end of product-caption -->
-													</div><!-- end of product-inner -->
-													</div><!-- end of product-thumb -->
-												</div>
-												<!-- end of product-layout -->
-            </div>
+            <?php } ?>
+            
             
           </div>
       </div>
