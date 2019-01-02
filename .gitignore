@@ -13,4 +13,3 @@ application/config/constants.php
 
 error_log
 .htaccess
-uploads/*
