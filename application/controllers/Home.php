@@ -21,10 +21,20 @@ class Home extends CI_Controller {
                           "rp.feature_product"=>1],
                 'limit' =>["8","0"],
             ];
-            $data['featureproducts'] = $this->Crud_model->fetch_result($options);
-           // echo "<pre>";
-            //print_r($data['featureproducts']);
-            //die;
+            $data['featureproducts'] = $this->Crud_model->fetch_result($options); //Featured products 
+            
+            $options = [
+              'select' => "rp.sid,rp.title as ptitle, rp.inv, rp.description, rp.price, rp.discount_per, rpi.title",
+              'table' => "r_product as rp",
+              'join' => [
+                ["r_product_images as rpi", "rp.sid = rpi.pid", "LEFT"]
+              ],
+              'where' => ["rpi.isdefault"=> 1,
+                          "rp.status"=>1,
+                          "rp.best_selling"=>1],
+                'limit' =>["8","0"],
+            ];
+            $data['bestSell'] = $this->Crud_model->fetch_result($options); //Featured products 
             
 	    $this->load->view('home',$data);
 	}
